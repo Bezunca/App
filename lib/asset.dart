@@ -8,8 +8,8 @@ class Asset {
   int _price; // Multiplied by 100
 
   final Map<String, IconData> _assetTypeIcons= {
-    "share": Icons.import_contacts,
-    "reit": Icons.home,
+    "share": Icons.library_books,
+    "reit": Icons.location_city,
     "etf": Icons.equalizer,
   };
 
