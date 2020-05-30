@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'asset.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,19 +7,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Bezunca Investimentos",
-        theme: ThemeData(
-          primaryColor: Colors.blue,
-        ),
-        home: RandomWords(),
+      title: "Bezunca Investimentos",
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: RandomWords(),
     );
   }
 }
 
 class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w900);
+  final _portfolio = <Asset>[
+    Asset("Itaúsa", "ITSA4", 886),
+    Asset("Fleury", "FLRY3", 2335),
+    Asset("Energias BR", "ENBR3", 1767),
+    Asset("Sinqia", "SQIA3", 1961),
+    Asset("B3", "B3SA3", 4530),
+  ];
+  final Set<Asset> _saved = Set<Asset>();
+
+  // Fonts
+  final _biggerFont =
+      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w900);
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _smallerFont = const TextStyle(fontSize: 14.0, color: Colors.grey);
 
@@ -38,12 +47,14 @@ class RandomWordsState extends State<RandomWords> {
 
   void _pushSaved() {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(   // Add 20 lines from here...
+      MaterialPageRoute<void>(
+        // Add 20 lines from here...
         builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map((WordPair pair) {
+          final Iterable<ListTile> tiles = _saved.map(
+            (Asset asset) {
               return ListTile(
                 title: Text(
-                  pair.asPascalCase,
+                  asset.name,
                   style: _biggerFont,
                 ),
               );
@@ -68,42 +79,37 @@ class RandomWordsState extends State<RandomWords> {
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
+          return _buildRow(_portfolio[i ~/ 2]);
         });
   }
 
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
+  Widget _buildRow(Asset asset) {
+    final bool alreadySaved = _saved.contains(asset);
     return ListTile(
       title: Text(
-        pair.asPascalCase,
+        asset.name,
         style: _biggerFont,
       ),
       subtitle: Text(
-        "ITSA4",
+        asset.ticker,
         style: _smallerFont,
       ),
       leading: Icon(
-        Icons.account_balance_wallet,
+        Icons.euro_symbol,
         color: alreadySaved ? Colors.green : null,
       ),
       trailing: Text(
-        "R\$8.80",
+        asset.price,
         style: _normalFont,
       ),
       onTap: () {
         setState(() {
           if (alreadySaved) {
-            _saved.remove(pair);
+            _saved.remove(asset);
           } else {
-            _saved.add(pair);
+            _saved.add(asset);
           }
         });
       },
