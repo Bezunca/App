@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final Set<WordPair> _saved = Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _biggerFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w900);
+  final _normalFont = const TextStyle(fontSize: 18.0);
+  final _smallerFont = const TextStyle(fontSize: 14.0, color: Colors.grey);
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +86,17 @@ class RandomWordsState extends State<RandomWords> {
         pair.asPascalCase,
         style: _biggerFont,
       ),
-      trailing: Icon(
+      subtitle: Text(
+        "ITSA4",
+        style: _smallerFont,
+      ),
+      leading: Icon(
         Icons.account_balance_wallet,
         color: alreadySaved ? Colors.green : null,
+      ),
+      trailing: Text(
+        "R\$8.80",
+        style: _normalFont,
       ),
       onTap: () {
         setState(() {
