@@ -41,7 +41,7 @@ class RandomWordsState extends State<RandomWords> {
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
         ],
       ),
-      body: _buildSuggestions(),
+      body: _buildPortfolio(),
     );
   }
 
@@ -76,12 +76,14 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
-  Widget _buildSuggestions() {
+  Widget _buildPortfolio() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
           if (i.isOdd) return Divider();
-          return _buildRow(_portfolio[i ~/ 2]);
+          int index = i ~/ 2;
+          if (index < _portfolio.length) return _buildRow(_portfolio[index]);
+          return null;
         });
   }
 
