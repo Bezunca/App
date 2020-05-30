@@ -7,28 +7,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Bezunca Investimentos",
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-      ),
-      home: RandomWords(),
+      title: "Bezunca",
+      home: Portfolio(),
     );
   }
 }
 
-class RandomWordsState extends State<RandomWords> {
+class PortfolioState extends State<Portfolio> {
   final _portfolio = <Asset>[
     Asset("Itaúsa", "ITSA4", 886),
     Asset("Fleury", "FLRY3", 2335),
-    Asset("Energias BR", "ENBR3", 1767),
+    Asset("Energias do Brasil", "ENBR3", 1767),
     Asset("Sinqia", "SQIA3", 1961),
     Asset("B3", "B3SA3", 4530),
   ];
-  final Set<Asset> _saved = Set<Asset>();
 
   // Fonts
   final _biggerFont =
-      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w900);
+      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
   final _normalFont = const TextStyle(fontSize: 18.0);
   final _smallerFont = const TextStyle(fontSize: 14.0, color: Colors.grey);
 
@@ -38,41 +34,10 @@ class RandomWordsState extends State<RandomWords> {
       appBar: AppBar(
         title: Text("Bezunca Investimentos"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+          IconButton(icon: Icon(Icons.search), onPressed: () => {}),
         ],
       ),
       body: _buildPortfolio(),
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        // Add 20 lines from here...
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-            (Asset asset) {
-              return ListTile(
-                title: Text(
-                  asset.name,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final List<Widget> divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList();
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Saved Suggestions'),
-            ),
-            body: ListView(children: divided),
-          );
-        },
-      ),
     );
   }
 
@@ -88,38 +53,24 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(Asset asset) {
-    final bool alreadySaved = _saved.contains(asset);
     return ListTile(
-      title: Text(
-        asset.name,
-        style: _biggerFont,
-      ),
-      subtitle: Text(
-        asset.ticker,
-        style: _smallerFont,
-      ),
-      leading: Icon(
-        Icons.euro_symbol,
-        color: alreadySaved ? Colors.green : null,
-      ),
-      trailing: Text(
-        asset.price,
-        style: _normalFont,
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(asset);
-          } else {
-            _saved.add(asset);
-          }
-        });
-      },
-    );
+        title: Text(
+          asset.name,
+          style: _biggerFont,
+        ),
+        subtitle: Text(
+          asset.ticker,
+          style: _smallerFont,
+        ),
+        leading: Icon(Icons.equalizer),
+        trailing: Text(
+          asset.price,
+          style: _normalFont,
+        ));
   }
 }
 
-class RandomWords extends StatefulWidget {
+class Portfolio extends StatefulWidget {
   @override
-  RandomWordsState createState() => RandomWordsState();
+  PortfolioState createState() => PortfolioState();
 }
