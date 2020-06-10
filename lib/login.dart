@@ -56,9 +56,7 @@ class LoginState extends State<Login> {
   _onClickLogin(BuildContext context) async{
     CEICredentials creds = CEICredentials(_cpf.text, _password.text);
     creds.save();
-    CEICredentials creds2 = CEICredentials("", "");
-    await creds2.load();
-    print(creds2);
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 }
 
