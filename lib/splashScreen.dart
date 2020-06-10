@@ -7,7 +7,6 @@ class SplashScreen extends StatelessWidget{
     redirect(context);
     return Scaffold(
       body: Center(child: Text("Loading..."))
-
     );
   }
 }
