@@ -19,15 +19,13 @@ class Storage {
   }
 
   Future<String> read() async {
-    try {
-      final file = await _localFile;
+    final file = await _localFile;
+    return await file.readAsString();
+  }
 
-      // Read the file
-      return await file.readAsString();
-    } catch (e) {
-      // If encountering an error, return 0
-      return "";
-    }
+  Future<bool> exists() async {
+    final file = await _localFile;
+    return await file.exists();
   }
 
   Future<File> write(String content) async {

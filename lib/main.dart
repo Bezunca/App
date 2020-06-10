@@ -1,15 +1,19 @@
+import 'package:app/login.dart';
+import 'package:app/portfolio.dart';
 import 'package:flutter/material.dart';
 
-import 'login.dart';
+import 'splashScreen.dart';
 
-void main() => runApp(MyApp());
+void main() async{
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Bezunca",
-      home: Login(),
-    );
-  }
+  runApp(MaterialApp(
+    title: "Bezunca",
+    home: SplashScreen(),
+    routes: <String, WidgetBuilder>{
+      // Set routes for using the Navigator.
+      '/home': (BuildContext context) => new Portfolio(),
+      '/login': (BuildContext context) => new Login()
+    },
+    )
+  );
 }

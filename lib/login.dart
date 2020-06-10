@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/cei_credentials.dart';
+import 'package:app/CEICredentials.dart';
 import 'package:flutter/material.dart';
 
 class LoginState extends State<Login> {

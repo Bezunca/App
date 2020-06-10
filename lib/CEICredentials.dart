@@ -8,6 +8,11 @@ class CEICredentials{
 
   CEICredentials(this._cpf, this._password);
 
+  CEICredentials .empty(){
+    _cpf = "";
+    _password = "";
+  }
+
   @override
   String toString(){
     return "CPF: $_cpf";
@@ -39,5 +44,10 @@ class CEICredentials{
     Storage credStorage = Storage(_filename);
     Map<String, dynamic> credJson = jsonDecode(await credStorage.read());
     this.fromJson(credJson);
+  }
+
+  exists() async{
+    Storage credStorage = Storage(_filename);
+    return await credStorage.exists();
   }
 }
