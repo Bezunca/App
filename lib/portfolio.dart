@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'asset.dart';
+import "developerSettings.dart";
 
 class PortfolioState extends State<Portfolio> {
   final _portfolio = <Asset>[
@@ -28,7 +29,7 @@ class PortfolioState extends State<Portfolio> {
       appBar: AppBar(
         title: Text("Bezunca Investimentos"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () => {}),
+          IconButton(icon: Icon(Icons.adb), onPressed: _pushSaved),
         ],
       ),
       body: _buildPortfolio(),
@@ -61,6 +62,16 @@ class PortfolioState extends State<Portfolio> {
           asset.price,
           style: _normalFont,
         ));
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return DeveloperSettings();
+        },
+      ),
+    );
   }
 }
 

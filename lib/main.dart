@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'splashScreen.dart';
 
-void main() async{
-
+void main() async {
   runApp(MaterialApp(
     title: "Bezunca",
     home: SplashScreen(),
@@ -14,6 +13,5 @@ void main() async{
       '/home': (BuildContext context) => new Portfolio(),
       '/login': (BuildContext context) => new Login()
     },
-    )
-  );
+  ));
 }
