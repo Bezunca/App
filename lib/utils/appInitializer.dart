@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/CEICredentials.dart';
+import 'package:app/utils/CEICredentials.dart';
 
 redirect(BuildContext context) async{
   CEICredentials creds = CEICredentials.empty();

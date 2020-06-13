@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app/storage.dart';
+import 'package:app/utils/storage.dart';
 
 class CEICredentials{
   String _cpf;

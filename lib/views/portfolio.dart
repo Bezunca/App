@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'asset.dart';
+import 'package:app/utils/theme.dart';
+import '../models/asset.dart';
 
 class PortfolioState extends State<Portfolio> {
   final _portfolio = <Asset>[
@@ -16,23 +17,9 @@ class PortfolioState extends State<Portfolio> {
     Asset("IShare SP500CI", "IVVB11", 11597, "etf")
   ];
 
-  // Fonts
-  final _biggerFont =
-      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
-  final _normalFont = const TextStyle(fontSize: 18.0);
-  final _smallerFont = const TextStyle(fontSize: 14.0, color: Colors.grey);
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bezunca Investimentos"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () => {}),
-        ],
-      ),
-      body: _buildPortfolio(),
-    );
+    return  _buildPortfolio();
   }
 
   Widget _buildPortfolio() {
@@ -50,16 +37,16 @@ class PortfolioState extends State<Portfolio> {
     return ListTile(
         title: Text(
           asset.name,
-          style: _biggerFont,
+          style: biggerFont,
         ),
         subtitle: Text(
           asset.ticker,
-          style: _smallerFont,
+          style: smallerFont,
         ),
         leading: Icon(asset.icon),
         trailing: Text(
           asset.price,
-          style: _normalFont,
+          style: normalFont,
         ));
   }
 }

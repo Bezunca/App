@@ -1,14 +1,9 @@
-import 'dart:convert';
+import 'package:app/utils/theme.dart';
 
-import 'package:app/CEICredentials.dart';
+import 'package:app/utils/CEICredentials.dart';
 import 'package:flutter/material.dart';
 
 class LoginState extends State<Login> {
-  
-  // Fonts
-  final _normalFont = const TextStyle(fontSize: 18.0);
-
-  final _buttonFont = const TextStyle(fontSize: 18.0, color: Colors.white);
 
   final _cpf = TextEditingController();
   final _password = TextEditingController();
@@ -27,22 +22,22 @@ class LoginState extends State<Login> {
               TextFormField(
                 controller: _cpf,
                 keyboardType: TextInputType.text,
-                style: _normalFont,
-                decoration: InputDecoration(labelText: "CPF", labelStyle: _normalFont)
+                style: normalFont,
+                decoration: InputDecoration(labelText: "CPF", labelStyle: normalFont)
               ),
               TextFormField(
                 controller: _password,
                 obscureText: true,
                 keyboardType: TextInputType.text,
-                style: _normalFont,
-                decoration: InputDecoration(labelText: "Senha", labelStyle: _normalFont)
+                style: normalFont,
+                decoration: InputDecoration(labelText: "Senha", labelStyle: normalFont)
               ),
               Container(
                 height: 40.0,
                 margin: EdgeInsets.only(top: 30.0),
                 child: RaisedButton(
                   color: Colors.blue,
-                  child: Text("LOGIN", style: _buttonFont),
+                  child: Text("LOGIN", style: buttonFont),
                   onPressed: () { _onClickLogin(context); },
                 ),
               )
