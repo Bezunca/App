@@ -38,6 +38,7 @@ class PortfolioState extends State<Portfolio> {
         title: Text(
           asset.name,
           style: biggerFont,
+          overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
           asset.ticker,
