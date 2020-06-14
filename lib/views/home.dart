@@ -12,7 +12,7 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Bezunca Investimentos'), actions: <Widget>[
-        IconButton(icon: Icon(Icons.adb), onPressed: _pushSaved)
+        IconButton(icon: Icon(Icons.adb), onPressed: developerMenu)
       ]),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -38,7 +38,7 @@ class HomeState extends State<Home> {
     });
   }
 
-  void _pushSaved() {
+  void developerMenu() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:app/utils/CEICredentials.dart';
+import 'package:app/utils/checkPrices.dart';
 import 'package:flutter/material.dart';
 
 class DeveloperSettings extends StatelessWidget {
@@ -15,13 +16,20 @@ class DeveloperSettings extends StatelessWidget {
             onTap: () => {CEICredentials.empty().delete()},
           ),
           ListTile(
-            title: Text("Option 2"),
+            title: Text("Test function 1"),
+            onTap: test1,
           ),
           ListTile(
-            title: Text("Option 3"),
+            title: Text("Test function 2"),
           )
         ]).toList(),
       ),
     );
   }
+}
+
+test1() async {
+  print("test button pressed");
+  print(await checkAssetPrice("ITSA4"));
+  print("test ended");
 }
