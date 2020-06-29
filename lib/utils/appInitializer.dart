@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/localStorage/UserCredentials.dart';
+import 'package:app/local_storage/user_credentials.dart';
 
 redirect(BuildContext context) async {
 

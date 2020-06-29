@@ -1,6 +1,6 @@
 import 'package:app/utils/theme.dart';
 
-import 'package:app/localStorage/CEICredentials.dart';
+import 'package:app/local_storage/CEICredentials.dart';
 import 'package:flutter/material.dart';
 
 class LoginState extends State<Login> {

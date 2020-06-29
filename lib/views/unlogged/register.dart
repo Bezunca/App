@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:app/utils/theme.dart';
 import 'dart:convert';
-import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
 
-import 'package:app/local_storage/user_credentials.dart';
+class RegisterState extends State<Register> {
 
-class LoginState extends State<Login> {
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -22,6 +21,16 @@ class LoginState extends State<Login> {
           margin: EdgeInsets.all(30.0),
           child: ListView(
             children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(bottom: 20.0),
+                  child: Text("Cadastre-se!",
+                      style: biggerFont)),
+              TextFormField(
+                  controller: _name,
+                  keyboardType: TextInputType.text,
+                  style: normalFont,
+                  decoration: InputDecoration(
+                      labelText: "Nome", labelStyle: normalFont)),
               TextFormField(
                   controller: _email,
                   keyboardType: TextInputType.text,
@@ -39,63 +48,40 @@ class LoginState extends State<Login> {
                   margin: EdgeInsets.only(top: 20.0),
                   child: Text(_message,
                       style: smallErrorFont, textAlign: TextAlign.center)),
-              FlatButton(
-                  onPressed: () {
-                   Navigator.pushNamed(context, '/forgot_password');
-                  },
-                  child: Text("Esqueceu sua senha?",
-                      style: smallerFont, textAlign: TextAlign.center)),
               Container(
                 height: 40.0,
-                margin: EdgeInsets.only(top: 0.0),
+                margin: EdgeInsets.only(top: 20.0),
                 child: RaisedButton(
                   color: Colors.blue,
-                  child: Text("LOGIN", style: buttonFont),
+                  child: Text("ENVIAR", style: buttonFont),
                   onPressed: () {
-                    _onClickLogin(context);
+                    _onClickRegister(context);
                   },
                 ),
-              ),
-              Container(
-                height: 40.0,
-                margin: EdgeInsets.only(top: 30.0),
-                child: RaisedButton(
-                  color: Colors.blue,
-                  child: Text("CADASTRE-SE", style: buttonFont),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/register');
-                  },
-                ),
-              ),
+              )
             ],
           ),
         ));
   }
 
-  Future _onClickLogin(BuildContext context) async {
-    String email = _email.text;
-    String password = _password.text;
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$email:$password'));
-
-    developer.log('teste', name: 'login', error: jsonEncode(basicAuth));
-
+  Future _onClickRegister(BuildContext context) async {
+    
     final http.Response response = await http.post(
-      'http://104.197.141.112/user/login',
+      'http://104.197.141.112/user/register',
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': basicAuth
+        'Content-Type': 'application/json; charset=UTF-8'
       },
+      body: jsonEncode(<String, String>{
+        'name': _name.text,
+        'email':  _email.text,
+        'password': _password.text
+      })
     );
 
     var body = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      setMessage("");
-
-      var token = body['token'];
-      UserCredentials creds = UserCredentials(token);
-      creds.save();
-      Navigator.of(context).pushReplacementNamed('/home');
+      setMessage("Cheque seu email");
     } else {
       setMessage(body['error']);
     }
@@ -108,7 +94,7 @@ class LoginState extends State<Login> {
   }
 }
 
-class Login extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  LoginState createState() => LoginState();
+  RegisterState createState() => RegisterState();
 }

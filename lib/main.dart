@@ -1,4 +1,6 @@
 import 'package:app/views/unlogged/login.dart';
+import 'package:app/views/unlogged/register.dart';
+import 'package:app/views/unlogged/forgot_password.dart';
 import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,9 @@ void main() async{
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
       '/home': (BuildContext context) => new Home(),
-      '/login': (BuildContext context) => new Login()
+      '/register': (BuildContext context) => new Register(),
+      '/login': (BuildContext context) => new Login(),
+      '/forgot_password': (BuildContext context) => new ForgotPassword()
     },
     )
   );
