@@ -34,4 +34,12 @@ class Storage {
     // Write the file
     return file.writeAsString(content);
   }
+
+  Future<File> delete() async {
+    final file = await _localFile;
+    if (await file.exists()) {
+      return file.delete();
+    }
+    return null;
+  }
 }
