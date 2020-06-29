@@ -1,14 +1,14 @@
-import 'package:app/utils/theme.dart';
-
-import 'package:app/localStorage/CEICredentials.dart';
 import 'package:flutter/material.dart';
+import 'package:app/utils/theme.dart';
+import 'dart:convert';
+import 'dart:developer' as developer;
+import 'package:http/http.dart' as http;
+
+import 'package:app/localStorage/UserCredentials.dart';
 
 class LoginState extends State<Login> {
-  final _cpf = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
-
-  final _smallErrorFont =
-      const TextStyle(fontSize: 14.0, color: Colors.redAccent);
 
   String warningMessage = "";
 
@@ -24,11 +24,11 @@ class LoginState extends State<Login> {
               child: ListView(
                 children: <Widget>[
                   TextFormField(
-                      controller: _cpf,
+                      controller: _email,
                       keyboardType: TextInputType.text,
                       style: normalFont,
                       decoration: InputDecoration(
-                          labelText: "CPF", labelStyle: normalFont)),
+                          labelText: "Email", labelStyle: normalFont)),
                   TextFormField(
                       controller: _password,
                       obscureText: true,
@@ -39,7 +39,7 @@ class LoginState extends State<Login> {
                   Container(
                       margin: EdgeInsets.only(top: 20.0),
                       child: Text(warningMessage,
-                          style: _smallErrorFont, textAlign: TextAlign.center)),
+                          style: smallErrorFont, textAlign: TextAlign.center)),
                   Container(
                     height: 40.0,
                     margin: EdgeInsets.only(top: 30.0),
@@ -56,19 +56,40 @@ class LoginState extends State<Login> {
     );
   }
 
-  _onClickLogin(BuildContext context) async {
-    CEICredentials creds = CEICredentials(_cpf.text, _password.text);
-    if (creds.validateCredentials()) {
+  Future<bool> _onClickLogin(BuildContext context) async {
+
+    String email = _email.text;
+    String password = _password.text;
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$email:$password'));
+
+    final http.Response response = await http.post(
+      'http://104.197.141.112/user/login',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'authorization': basicAuth
+      },
+    );
+
+    var body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      var token = body['token'];
+      
+      UserCredentials creds = UserCredentials(token);
       setState(() {
         warningMessage = "";
       });
       creds.save();
       Navigator.of(context).pushReplacementNamed('/home');
+
     } else {
+      var error = body['error'];
       setState(() {
-        warningMessage = "Credenciais inválidas";
+        warningMessage = error;
       });
     }
+
+    return true;
   }
 }
 
