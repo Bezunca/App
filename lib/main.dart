@@ -5,8 +5,11 @@ import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/views/splashScreen.dart';
+import 'package:app/locator.dart';
 
 void main() async{
+
+  setupLocator();
 
   runApp(MaterialApp(
     title: "Bezunca",

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app/utils/storage.dart';
+import 'package:app/localStorage/storage.dart';
 
 class UserCredentials {
 

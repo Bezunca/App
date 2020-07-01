@@ -1,5 +1,5 @@
-import 'package:app/local_storage/CEICredentials.dart';
-import 'package:app/local_storage/user_credentials.dart';
+import 'package:app/localStorage/CEICredentials.dart';
+import 'package:app/localStorage/userCredentials.dart';
 import 'package:app/utils/checkPrices.dart';
 import 'package:flutter/material.dart';
 
