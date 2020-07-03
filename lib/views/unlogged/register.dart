@@ -17,40 +17,47 @@ class RegisterState extends State<Register> {
         appBar: AppBar(
           title: Text("Bezunca Investimentos"),
         ),
-        body: Container(
-          margin: EdgeInsets.all(30.0),
-          child: ListView(
+        body: ListView(
             children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(bottom: 20.0),
+                  margin: EdgeInsets.only(top: 30, left: 30, right: 30),
                   child: Text("Cadastre-se!",
                       style: biggerFont)),
-              TextFormField(
+              Container(
+                margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                child: TextFormField(
                   controller: _name,
                   keyboardType: TextInputType.text,
                   style: normalFont,
                   decoration: InputDecoration(
-                      labelText: "Nome", labelStyle: normalFont)),
-              TextFormField(
+                      labelText: "Nome", labelStyle: normalFont))
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 30, right: 30),
+                child: TextFormField(
                   controller: _email,
                   keyboardType: TextInputType.text,
                   style: normalFont,
                   decoration: InputDecoration(
-                      labelText: "Email", labelStyle: normalFont)),
-              TextFormField(
+                      labelText: "Email", labelStyle: normalFont))
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 30, right: 30),
+                child: TextFormField(
                   controller: _password,
                   obscureText: true,
                   keyboardType: TextInputType.text,
                   style: normalFont,
                   decoration: InputDecoration(
-                      labelText: "Senha", labelStyle: normalFont)),
+                      labelText: "Senha", labelStyle: normalFont))
+              ),
               Container(
-                  margin: EdgeInsets.only(top: 20.0),
+                  margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                   child: Text(_message,
                       style: smallErrorFont, textAlign: TextAlign.center)),
               Container(
                 height: 40.0,
-                margin: EdgeInsets.only(top: 20.0),
+                margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                 child: RaisedButton(
                   color: Colors.blue,
                   child: Text("ENVIAR", style: buttonFont),
@@ -61,7 +68,7 @@ class RegisterState extends State<Register> {
               )
             ],
           ),
-        ));
+        );
   }
 
   Future _onClickRegister(BuildContext context) async {

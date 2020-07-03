@@ -1,11 +1,13 @@
 import 'package:app/views/unlogged/login.dart';
 import 'package:app/views/unlogged/register.dart';
 import 'package:app/views/unlogged/forgot_password.dart';
+import 'package:app/views/unlogged/reset_password.dart';
 import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/views/splashScreen.dart';
 import 'package:app/locator.dart';
+import 'package:app/services/navigationService.dart';
 
 void main() async{
 
@@ -19,8 +21,10 @@ void main() async{
       '/home': (BuildContext context) => new Home(),
       '/register': (BuildContext context) => new Register(),
       '/login': (BuildContext context) => new Login(),
-      '/forgot_password': (BuildContext context) => new ForgotPassword()
+      '/forgot_password': (BuildContext context) => new ForgotPassword(),
+      '/reset_password': (BuildContext context) => new ResetPassword()
     },
+    navigatorKey: getIt<NavigationService>().navigationKey,
     )
   );
 }

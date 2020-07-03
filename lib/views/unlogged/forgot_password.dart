@@ -16,27 +16,28 @@ class ForgotPasswordState extends State<ForgotPassword> {
         appBar: AppBar(
           title: Text("Bezunca Investimentos"),
         ),
-        body: Container(
-          margin: EdgeInsets.all(30.0),
-          child: ListView(
+        body: ListView(
             children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(bottom: 20.0),
+                  margin: EdgeInsets.only(top: 30, left: 30, right: 30),
                   child: Text("Esqueceu sua senha?",
                       style: biggerFont)),
-              TextFormField(
+              Container(
+                margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                child: TextFormField(
                   controller: _email,
                   keyboardType: TextInputType.text,
                   style: normalFont,
                   decoration: InputDecoration(
-                      labelText: "Email", labelStyle: normalFont)),
+                      labelText: "Email", labelStyle: normalFont))
+              ),
               Container(
-                  margin: EdgeInsets.only(top: 20.0),
+                  margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                   child: Text(_message,
                       style: smallErrorFont, textAlign: TextAlign.center)),
               Container(
                 height: 40.0,
-                margin: EdgeInsets.only(top: 20.0),
+                margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                 child: RaisedButton(
                   color: Colors.blue,
                   child: Text("ENVIAR EMAIL", style: buttonFont),
@@ -47,7 +48,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
               )
             ],
           ),
-        ));
+        );
   }
 
   Future _onClickForgotPassword(BuildContext context) async {
