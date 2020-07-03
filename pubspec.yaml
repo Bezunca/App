@@ -30,6 +30,11 @@ dependencies:
   cupertino_icons: ^0.1.3
   path_provider: ^1.6.10
   http: ^0.12.1
+  get_it: ^4.0.2
+
+  #Dynamic Links Dependencies
+  firebase_dynamic_links: ^0.5.1
+  firebase_core: ^0.4.5
 
 dev_dependencies:
   flutter_test:

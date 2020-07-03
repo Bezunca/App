@@ -1,4 +1,5 @@
-import 'package:app/utils/CEICredentials.dart';
+import 'package:app/localStorage/CEICredentials.dart';
+import 'package:app/localStorage/userCredentials.dart';
 import 'package:app/utils/checkPrices.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,10 @@ class DeveloperSettings extends StatelessWidget {
       ),
       body: ListView(
         children: ListTile.divideTiles(context: context, tiles: [
+          ListTile(
+            title: Text("Erase User credentials from local storage"),
+            onTap: () => {UserCredentials.empty().delete()},
+          ),
           ListTile(
             title: Text("Erase CEI credentials from local storage"),
             onTap: () => {CEICredentials.empty().delete()},

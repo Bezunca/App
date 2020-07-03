@@ -1,10 +1,17 @@
-import 'package:app/views/login.dart';
+import 'package:app/views/unlogged/login.dart';
+import 'package:app/views/unlogged/register.dart';
+import 'package:app/views/unlogged/forgot_password.dart';
+import 'package:app/views/unlogged/reset_password.dart';
 import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/views/splashScreen.dart';
+import 'package:app/locator.dart';
+import 'package:app/services/navigationService.dart';
 
 void main() async{
+
+  setupLocator();
 
   runApp(MaterialApp(
     title: "Bezunca",
@@ -12,8 +19,12 @@ void main() async{
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
       '/home': (BuildContext context) => new Home(),
-      '/login': (BuildContext context) => new Login()
+      '/register': (BuildContext context) => new Register(),
+      '/login': (BuildContext context) => new Login(),
+      '/forgot_password': (BuildContext context) => new ForgotPassword(),
+      '/reset_password': (BuildContext context) => new ResetPassword()
     },
+    navigatorKey: getIt<NavigationService>().navigationKey,
     )
   );
 }

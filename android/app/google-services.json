@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1481906026",
+    "firebase_url": "https://bezunca-investimentos.firebaseio.com",
+    "project_id": "bezunca-investimentos",
+    "storage_bucket": "bezunca-investimentos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1481906026:android:26b4aa375a66844bdff713",
+        "android_client_info": {
+          "package_name": "com.bezunca.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1481906026-ojnodl26jp9jql492ou5rhs5is30s36n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT_wbhrNtVC3hvfzDB8ObRB6qJAZZCSU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1481906026-ojnodl26jp9jql492ou5rhs5is30s36n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
