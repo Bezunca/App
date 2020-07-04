@@ -2,6 +2,7 @@ import 'package:app/utils/theme.dart';
 
 import 'package:app/localStorage/CEICredentials.dart';
 import 'package:flutter/material.dart';
+import 'package:app/views/home.dart';
 
 class LoginState extends State<Login> {
   final _cpf = TextEditingController();
@@ -63,7 +64,7 @@ class LoginState extends State<Login> {
         warningMessage = "";
       });
       creds.save();
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed(Home.route);
     } else {
       setState(() {
         warningMessage = "Credenciais inválidas";

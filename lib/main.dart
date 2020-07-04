@@ -18,11 +18,11 @@ void main() async{
     home: SplashScreen(),
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
-      '/home': (BuildContext context) => new Home(),
-      '/register': (BuildContext context) => new Register(),
-      '/login': (BuildContext context) => new Login(),
-      '/forgot_password': (BuildContext context) => new ForgotPassword(),
-      '/reset_password': (BuildContext context) => new ResetPassword()
+      Home.route: (BuildContext context) => new Home(),
+      Register.route: (BuildContext context) => new Register(),
+      Login.route: (BuildContext context) => new Login(),
+      ForgotPassword.route: (BuildContext context) => new ForgotPassword(),
+      ResetPassword.route: (BuildContext context) => new ResetPassword()
     },
     navigatorKey: getIt<NavigationService>().navigationKey,
     )
