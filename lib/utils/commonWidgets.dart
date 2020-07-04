@@ -1,3 +1,4 @@
+import 'package:app/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 void openDialog(context, title, content, actions, {dismissible=true} ) {
@@ -26,4 +27,15 @@ void openDialog(context, title, content, actions, {dismissible=true} ) {
       );
     }
   );
+}
+
+Widget buildErrorMessage(errors, key) {
+  if (errors.containsKey(key)) {
+    return Container(
+        margin: EdgeInsets.only(top: 10.0),
+        child: Text(errors[key],
+            style: smallErrorFont, textAlign: TextAlign.center));
+  }else{
+    return Container();
+  }
 }

@@ -11,7 +11,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
   final UserApi _userApi = getIt<UserApi>();
 
   final _email = TextEditingController();
-  String _message = "";
+  Map<String, dynamic> _errors = {};
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,13 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       decoration: InputDecoration(
                           labelText: "Email", labelStyle: normalFont))),
               Container(
-                  margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
-                  child: Text(_message,
-                      style: smallErrorFont, textAlign: TextAlign.center)),
+                margin: EdgeInsets.only(left:30,right:30),
+                child: buildErrorMessage(_errors, 'email'),
+              ),
+              Container(
+                margin: EdgeInsets.only(left:30,right:30),
+                child: buildErrorMessage(_errors, 'general'),
+              ),
               Container(
                 height: 40.0,
                 margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
@@ -64,10 +68,14 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
     setState(() {
       if(response == null){
-        setMessage("Erro no servidor.");
-      }else if(response.containsKey('error')){
-        setMessage(response['error']);
+        print("resposta null");
+        _errors = {"general": "Erro no servidor"};
+      }else if(response.containsKey('errors')){
+        print("recebi erro");
+        print(response);
+        _errors = response["errors"];
       }else{
+        print("show pa show pei");
         openDialog(context, 
           Text("Email enviado!"), 
           Text("Verifique sua caixa de entrada para ter acesso as instruções de redefinição de senha!"), 
@@ -80,16 +88,11 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
   void cleanScreen() {
     setState(() {
-      _message = "";
+      _errors = {};
       _email.clear();
     });
   }
 
-  void setMessage(message) {
-    setState(() {
-      _message = message;
-    });
-  }
 }
 
 class ForgotPassword extends StatefulWidget {

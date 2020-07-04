@@ -45,7 +45,7 @@ class LoginState extends State<Login> {
                           labelText: "Email", labelStyle: normalFont))),
               Container(
                 margin: EdgeInsets.only(left:30,right:30),
-                child: _buildErrorMessage('email'),
+                child: buildErrorMessage(_errors, 'email'),
               ),
               Container(
                   margin: EdgeInsets.only(left: 30, right: 30),
@@ -58,11 +58,11 @@ class LoginState extends State<Login> {
                           labelText: "Senha", labelStyle: normalFont))),
               Container(
                 margin: EdgeInsets.only(left:30,right:30),
-                child: _buildErrorMessage('password'),
+                child: buildErrorMessage(_errors, 'password'),
               ),
               Container(
                 margin: EdgeInsets.only(left:30,right:30),
-                child: _buildErrorMessage('general'),
+                child: buildErrorMessage(_errors, 'general'),
               ),
               Container(
                   margin: EdgeInsets.only(left: 30, right: 30),
@@ -168,16 +168,6 @@ class LoginState extends State<Login> {
     });
   }
 
-  Widget _buildErrorMessage(key) {
-    if (_errors.containsKey(key)) {
-      return Container(
-          margin: EdgeInsets.only(top: 10.0),
-          child: Text(_errors[key],
-              style: smallErrorFont, textAlign: TextAlign.center));
-    }else{
-      return Container();
-    }
-  }
 }
 
 class Login extends StatefulWidget {
