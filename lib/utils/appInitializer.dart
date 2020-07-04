@@ -11,10 +11,6 @@ initApp(BuildContext context) async {
   await _dynamicLinkService.handleDynamicLinks();
 
   redirect(context);
-
-  /*WidgetsBinding.instance.addPostFrameCallback((_) {
-    
-  });*/
 }
 
 redirect(BuildContext context) async {

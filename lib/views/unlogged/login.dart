@@ -15,7 +15,7 @@ class LoginState extends State<Login> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  String _message = "";
+  Map<String, dynamic> _errors = {};
 
   void initState() {
     super.initState();
@@ -44,6 +44,10 @@ class LoginState extends State<Login> {
                       decoration: InputDecoration(
                           labelText: "Email", labelStyle: normalFont))),
               Container(
+                margin: EdgeInsets.only(left:30,right:30),
+                child: _buildErrorMessage('email'),
+              ),
+              Container(
                   margin: EdgeInsets.only(left: 30, right: 30),
                   child: TextFormField(
                       controller: _password,
@@ -53,9 +57,13 @@ class LoginState extends State<Login> {
                       decoration: InputDecoration(
                           labelText: "Senha", labelStyle: normalFont))),
               Container(
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Text(_message,
-                      style: smallErrorFont, textAlign: TextAlign.center)),
+                margin: EdgeInsets.only(left:30,right:30),
+                child: _buildErrorMessage('password'),
+              ),
+              Container(
+                margin: EdgeInsets.only(left:30,right:30),
+                child: _buildErrorMessage('general'),
+              ),
               Container(
                   margin: EdgeInsets.only(left: 30, right: 30),
                   child: FlatButton(
@@ -100,13 +108,15 @@ class LoginState extends State<Login> {
 
     setState(() {
       if (response == null) {
-        setMessage("Erro no servidor.");
-      } else if (response.containsKey('error')) {
-        setMessage(response['error']);
-      } else {
+        _errors = {"general": "Erro no servidor"};
+      } else if (response.containsKey('errors')) {
+        _errors = response['errors'];
+      } else if (response.containsKey("token")){
         cleanScreen();
         var token = response['token'];
         doLogin(context, token);
+      } else {
+        _errors = {"general": "Erro no servidor"};
       }
     });
   }
@@ -152,16 +162,21 @@ class LoginState extends State<Login> {
 
   void cleanScreen() {
     setState(() {
-      _message = "";
+      _errors = {};
       _email.clear();
       _password.clear();
     });
   }
 
-  void setMessage(message) {
-    setState(() {
-      _message = message;
-    });
+  Widget _buildErrorMessage(key) {
+    if (_errors.containsKey(key)) {
+      return Container(
+          margin: EdgeInsets.only(top: 10.0),
+          child: Text(_errors[key],
+              style: smallErrorFont, textAlign: TextAlign.center));
+    }else{
+      return Container();
+    }
   }
 }
 

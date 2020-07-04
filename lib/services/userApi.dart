@@ -18,7 +18,7 @@ class UserApi {
     _headers['Authorization'] = token;
   }
   
-  Future<Map<String, dynamic>> response(String method, String endpoint, [Map<String, dynamic> params]) async {
+  Future<Map<String, dynamic>> request(String method, String endpoint, [Map<String, dynamic> params]) async {
     method = method.toUpperCase();
     http.Response httpResponse;
     String fullUrl = baseURL + endpoint;
@@ -34,13 +34,18 @@ class UserApi {
           if (body == null){
             body = json.decode("{}");
           }
+          print(body);
           return body;
         } on FormatException {
           return null;
         }
       }
+      print("HTTP ERROR");
+      print(httpResponse.statusCode);
+      print(httpResponse.body);
       return null;
     } on HttpException {
+      print("Request failed");
       return null;
     }
   }
@@ -50,7 +55,7 @@ class UserApi {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$email:$password'));
     setAuthorizationToken(basicAuth);
 
-    return response('POST', 'user/login', {});
+    return request('POST', 'user/login', {});
   }
 
   Future<Map<String, dynamic>> register(name, email, password) async {
@@ -59,14 +64,14 @@ class UserApi {
       'email': email,
       'password': password,
     };
-    return response('POST', 'user/register', params);
+    return request('POST', 'user/register', params);
   }
 
   Future<Map<String, dynamic>> forgotPassword(email) async {
     Map<String, dynamic> params = {
       'email': email
     };
-    return response('POST', 'user/forgot_password', params);
+    return request('POST', 'user/forgot_password', params);
   }
 
   Future<Map<String, dynamic>> resetPassword(password, token) async {
@@ -74,13 +79,13 @@ class UserApi {
       'password': password,
       'token': token
     };
-    return response('POST', 'user/reset_password', params);
+    return request('POST', 'user/reset_password', params);
   }
 
   Future<Map<String, dynamic>> confirmRegistration(token) async {
     Map<String, dynamic> params = {
       'token': token
     };
-    return response('POST', 'user/confirm_registration', params);
+    return request('POST', 'user/confirm_registration', params);
   }
 }
