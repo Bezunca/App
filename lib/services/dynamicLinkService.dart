@@ -1,16 +1,19 @@
 import 'dart:developer' as developer;
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 import "package:app/services/navigationService.dart";
 import "package:app/locator.dart";
 import 'package:app/localStorage/userCredentials.dart';
+import 'package:app/views/unlogged/login.dart';
+import 'package:app/views/unlogged/reset_password.dart';
+import 'package:app/utils/commonWidgets.dart';
+import 'package:app/services/userApi.dart';
+import 'package:app/views/home.dart';
 
 class DynamicLinkService {
 
   final NavigationService _navigationService = getIt<NavigationService>();
+  final UserApi _userApi = getIt<UserApi>();
   
   Future handleDynamicLinks() async {
     // 1. Get the initial dynamic link if the app is opened with a dynamic link
@@ -33,7 +36,6 @@ class DynamicLinkService {
 
   void _handleDeepLink(PendingDynamicLinkData data) {
     final Uri deepLink = data?.link;
-    developer.log('link', name: 'deeplink', error: deepLink);
     if (deepLink != null) {
       var route = deepLink.pathSegments[0];
 
@@ -48,34 +50,11 @@ class DynamicLinkService {
   }
 
   void _confirmRegistration(String token) async{
-    developer.log('token', name: 'deeplink', error: token);
-
-    final http.Response response = await http.post(
-      'http://104.197.141.112/user/confirm_registration',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(<String, String>{
-        'token': token
-      })
-    );
-
-    var body = jsonDecode(response.body);
-
-    developer.log('body', name: 'deeplink', error: jsonEncode(body));
-
-    if (response.statusCode == 200) {
-      var authToken = body['token'];
-      UserCredentials creds = UserCredentials(authToken);
-      creds.save();
-      _navigationService.setRoot('/home');
-    } else {
-      developer.log('error', name: 'deeplink', error: body['error']);
-    }
+    _navigationService.setRoot(Login.route, arguments: {'token': token});
   }
 
   void _resetPassword(String token) {
-    developer.log('2', name: 'deeplink', error: token);
-    _navigationService.push('/reset_password', arguments: {'token': token});
+    _navigationService.setRoot(Login.route);
+    _navigationService.push(ResetPassword.route, arguments: {'token': token});
   }
 }

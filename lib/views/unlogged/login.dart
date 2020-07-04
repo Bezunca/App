@@ -1,108 +1,161 @@
 import 'package:flutter/material.dart';
 import 'package:app/utils/theme.dart';
-import 'dart:convert';
-import 'dart:developer' as developer;
-import 'package:http/http.dart' as http;
 
 import 'package:app/localStorage/userCredentials.dart';
+import 'package:app/locator.dart';
+import 'package:app/services/userApi.dart';
+import 'package:app/utils/commonWidgets.dart';
+import 'package:app/views/unlogged/register.dart';
+import 'package:app/views/unlogged/forgot_password.dart';
+import 'package:app/views/home.dart';
 
 class LoginState extends State<Login> {
+  final UserApi _userApi = getIt<UserApi>();
+
   final _email = TextEditingController();
   final _password = TextEditingController();
 
   String _message = "";
 
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => confirmRegister(context));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Bezunca Investimentos"),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-              child: TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.text,
-                  style: normalFont,
-                  decoration: InputDecoration(
-                      labelText: "Email", labelStyle: normalFont))),
-          Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
-              child: TextFormField(
-                  controller: _password,
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                  style: normalFont,
-                  decoration: InputDecoration(
-                      labelText: "Senha", labelStyle: normalFont))),
-          Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: Text(_message,
-                  style: smallErrorFont, textAlign: TextAlign.center)),
-          Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
-              child: FlatButton(
+        appBar: AppBar(
+          title: Text("Bezunca Investimentos"),
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: ListView(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                  child: TextFormField(
+                      controller: _email,
+                      keyboardType: TextInputType.text,
+                      style: normalFont,
+                      decoration: InputDecoration(
+                          labelText: "Email", labelStyle: normalFont))),
+              Container(
+                  margin: EdgeInsets.only(left: 30, right: 30),
+                  child: TextFormField(
+                      controller: _password,
+                      obscureText: true,
+                      keyboardType: TextInputType.text,
+                      style: normalFont,
+                      decoration: InputDecoration(
+                          labelText: "Senha", labelStyle: normalFont))),
+              Container(
+                  margin: EdgeInsets.only(top: 20.0),
+                  child: Text(_message,
+                      style: smallErrorFont, textAlign: TextAlign.center)),
+              Container(
+                  margin: EdgeInsets.only(left: 30, right: 30),
+                  child: FlatButton(
+                      onPressed: () {
+                        cleanScreen();
+                        Navigator.pushNamed(context, ForgotPassword.route);
+                      },
+                      child: Text("Esqueceu sua senha?",
+                          style: smallerFont, textAlign: TextAlign.center))),
+              Container(
+                height: 40.0,
+                margin: EdgeInsets.only(top: 0.0, left: 30, right: 30),
+                child: RaisedButton(
+                  color: Colors.blue,
+                  child: Text("LOGIN", style: buttonFont),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/forgot_password');
+                    _onClickLogin(context);
                   },
-                  child: Text("Esqueceu sua senha?",
-                      style: smallerFont, textAlign: TextAlign.center))),
-          Container(
-            height: 40.0,
-            margin: EdgeInsets.only(top: 0.0, left: 30, right: 30),
-            child: RaisedButton(
-              color: Colors.blue,
-              child: Text("LOGIN", style: buttonFont),
-              onPressed: () {
-                _onClickLogin(context);
-              },
-            ),
+                ),
+              ),
+              Container(
+                height: 40.0,
+                margin: EdgeInsets.only(top: 30.0, left: 30, right: 30),
+                child: RaisedButton(
+                  color: Colors.blue,
+                  child: Text("CADASTRE-SE", style: buttonFont),
+                  onPressed: () {
+                    cleanScreen();
+                    Navigator.pushNamed(context, Register.route);
+                  },
+                ),
+              ),
+            ],
           ),
-          Container(
-            height: 40.0,
-            margin: EdgeInsets.only(top: 30.0, left: 30, right: 30),
-            child: RaisedButton(
-              color: Colors.blue,
-              child: Text("CADASTRE-SE", style: buttonFont),
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   Future _onClickLogin(BuildContext context) async {
-    String email = _email.text;
-    String password = _password.text;
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$email:$password'));
+    openDialog(context, null, Text("Logando..."), [], dismissible: false);
+    var response = await _userApi.login(_email.text, _password.text);
+    Navigator.of(context).pop();
 
-    developer.log('teste', name: 'login', error: jsonEncode(basicAuth));
+    setState(() {
+      if (response == null) {
+        setMessage("Erro no servidor.");
+      } else if (response.containsKey('error')) {
+        setMessage(response['error']);
+      } else {
+        cleanScreen();
+        var token = response['token'];
+        doLogin(context, token);
+      }
+    });
+  }
 
-    final http.Response response = await http.post(
-      'http://104.197.141.112/user/login',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'authorization': basicAuth
-      },
-    );
+  void doLogin(BuildContext context, token) {
+    UserCredentials creds = UserCredentials(token);
+    creds.save();
+    Navigator.of(context).pushReplacementNamed(Home.route);
+  }
 
-    var body = jsonDecode(response.body);
+  Future<void> confirmRegister(BuildContext context) async {
+    var args = ModalRoute.of(context).settings.arguments as Map;
+    if (args != null) {
 
-    if (response.statusCode == 200) {
-      setMessage("");
+      var token = args['token'];
+      openDialog(context, null, Text("Ativando conta..."), [], dismissible: false);
+      var response = await _userApi.confirmRegistration(token);
+      Navigator.of(context).pop();
 
-      var token = body['token'];
-      UserCredentials creds = UserCredentials(token);
-      creds.save();
-      Navigator.of(context).pushReplacementNamed('/home');
-    } else {
-      setMessage(body['error']);
+      setState(() {
+        if (response == null) {
+          openDialog(context, null, Text("Erro no servidor."), [
+            {
+              'text': 'ok',
+              'action': () => {Navigator.of(context).pop()}
+            }
+          ]);
+        } else if (response.containsKey('error')) {
+          openDialog(context, Text("Erro"), Text(response['error']), [
+            {
+              'text': 'ok',
+              'action': () => {Navigator.of(context).pop()}
+            }
+          ]);
+        } else {
+          cleanScreen();
+          var authToken = response['token'];
+          doLogin(context, authToken);
+        }
+      });
     }
+  }
+
+  void cleanScreen() {
+    setState(() {
+      _message = "";
+      _email.clear();
+      _password.clear();
+    });
   }
 
   void setMessage(message) {
@@ -113,6 +166,8 @@ class LoginState extends State<Login> {
 }
 
 class Login extends StatefulWidget {
+  static final String route = '/login';
+
   @override
   LoginState createState() => LoginState();
 }

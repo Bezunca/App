@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
+
 import 'package:app/utils/theme.dart';
-import 'dart:convert';
-import 'dart:developer' as developer;
-import 'package:http/http.dart' as http;
+import 'package:app/locator.dart';
+import 'package:app/services/userApi.dart';
+import 'package:app/utils/commonWidgets.dart';
+import 'package:app/views/unlogged/login.dart';
 
 class ForgotPasswordState extends State<ForgotPassword> {
 
-  final _email = TextEditingController();
+  final UserApi _userApi = getIt<UserApi>();
 
+  final _email = TextEditingController();
   String _message = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Bezunca Investimentos"),
-        ),
-        body: ListView(
+      appBar: AppBar(
+        title: Text("Bezunca Investimentos"),
+      ),
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: ListView(
             children: <Widget>[
               Container(
                   margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-                  child: Text("Esqueceu sua senha?",
-                      style: biggerFont)),
+                  child: Text("Esqueceu sua senha?", style: biggerFont)),
               Container(
-                margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-                child: TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.text,
-                  style: normalFont,
-                  decoration: InputDecoration(
-                      labelText: "Email", labelStyle: normalFont))
-              ),
+                  margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                  child: TextFormField(
+                      controller: _email,
+                      keyboardType: TextInputType.text,
+                      style: normalFont,
+                      decoration: InputDecoration(
+                          labelText: "Email", labelStyle: normalFont))),
               Container(
                   margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                   child: Text(_message,
@@ -47,30 +52,37 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 ),
               )
             ],
-          ),
-        );
+          )),
+    );
   }
 
   Future _onClickForgotPassword(BuildContext context) async {
 
-    final http.Response response = await http.post(
-      'http://104.197.141.112/user/forgot_password',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(<String, String>{
-        'email':  _email.text
-      })
-    );
+    openDialog(context, null, Text("Enviando Email..."), [], dismissible: false);
+    var response = await _userApi.forgotPassword( _email.text);
+    Navigator.of(context).pop();
 
-    developer.log('teste', name: 'forgot', error: jsonEncode(response.body));
+    setState(() {
+      if(response == null){
+        setMessage("Erro no servidor.");
+      }else if(response.containsKey('error')){
+        setMessage(response['error']);
+      }else{
+        openDialog(context, 
+          Text("Email enviado!"), 
+          Text("Verifique sua caixa de entrada para ter acesso as instruções de redefinição de senha!"), 
+          [{'text': 'ok', 'action': () => { Navigator.of(context).pushReplacementNamed(Login.route) }}]
+        );
+        cleanScreen();
+      }
+    });
+  }
 
-    if (response.statusCode == 200) {
-      setMessage("Cheque seu email");
-    } else {
-      var body = jsonDecode(response.body);
-      setMessage(body['error']);
-    }
+  void cleanScreen() {
+    setState(() {
+      _message = "";
+      _email.clear();
+    });
   }
 
   void setMessage(message) {
@@ -81,6 +93,9 @@ class ForgotPasswordState extends State<ForgotPassword> {
 }
 
 class ForgotPassword extends StatefulWidget {
+
+  static final String route = '/forgot_password';
+
   @override
   ForgotPasswordState createState() => ForgotPasswordState();
 }

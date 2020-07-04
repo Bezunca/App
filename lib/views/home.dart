@@ -50,6 +50,9 @@ class HomeState extends State<Home> {
 }
 
 class Home extends StatefulWidget {
+
+  static final String route = '/home';
+
   @override
   State<StatefulWidget> createState() {
     return HomeState();

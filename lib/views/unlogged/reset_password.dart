@@ -1,83 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:app/utils/theme.dart';
-import 'dart:convert';
-import 'dart:developer' as developer;
-import 'package:http/http.dart' as http;
 
+import 'package:app/utils/theme.dart';
+import 'package:app/locator.dart';
+import 'package:app/services/userApi.dart';
+import 'package:app/utils/commonWidgets.dart';
+import 'package:app/views/unlogged/login.dart';
 
 class ResetPasswordState extends State<ResetPassword> {
-  
+
+  final UserApi _userApi = getIt<UserApi>();
+
   final _password = TextEditingController();
   String _message = "";
 
   @override
   Widget build(BuildContext context) {
-
     var args = ModalRoute.of(context).settings.arguments as Map;
-
-    developer.log('token', name: 'reset', error: args['token']);
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Bezunca Investimentos"),
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
+      body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: ListView(
+            children: <Widget>[
+              Container(
                   margin: EdgeInsets.only(top: 30, left: 30, right: 30),
-                  child: Text("Nova senha:",
-                      style: biggerFont)),
-          Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
-              child: TextFormField(
-                  controller: _password,
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                  style: normalFont,
-                  decoration: InputDecoration(
-                      labelText: "Senha", labelStyle: normalFont))),
-          Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: Text(_message,
-                  style: smallErrorFont, textAlign: TextAlign.center)),
-          Container(
-            height: 40.0,
-            margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
-            child: RaisedButton(
-              color: Colors.blue,
-              child: Text("REDEFINIR", style: buttonFont),
-              onPressed: () {
-                _onClickResetPassword(context, args['token']);
-              },
-            ),
-          )
-        ],
-      ),
+                  child: Text("Nova senha:", style: biggerFont)),
+              Container(
+                  margin: EdgeInsets.only(left: 30, right: 30),
+                  child: TextFormField(
+                      controller: _password,
+                      obscureText: true,
+                      keyboardType: TextInputType.text,
+                      style: normalFont,
+                      decoration: InputDecoration(
+                          labelText: "Senha", labelStyle: normalFont))),
+              Container(
+                  margin: EdgeInsets.only(top: 20.0),
+                  child: Text(_message,
+                      style: smallErrorFont, textAlign: TextAlign.center)),
+              Container(
+                height: 40.0,
+                margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
+                child: RaisedButton(
+                  color: Colors.blue,
+                  child: Text("REDEFINIR", style: buttonFont),
+                  onPressed: () {
+                    _onClickResetPassword(context, args['token']);
+                  },
+                ),
+              )
+            ],
+          )),
     );
   }
 
   Future _onClickResetPassword(BuildContext context, token) async {
 
-    developer.log('token inside', name: 'reset', error: token);
+    openDialog(context, null, Text("Redefinindo..."), [], dismissible: false);
+    var response = await _userApi.resetPassword(_password.text, token);
+    Navigator.of(context).pop();
 
-    final http.Response response = await http.post(
-      'http://104.197.141.112/user/reset_password',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(<String, String>{
-        'password': _password.text,
-        'token': token
-      })
-    );
+    setState(() {
+      if(response == null){
+        setMessage("Erro no servidor.");
+      }else if(response.containsKey('error')){
+        setMessage(response['error']);
+      }else{
+        cleanScreen();
+        openDialog(context, 
+          Text("Senha redefinida!"), 
+          Text("Já é possível fazer login com a nova senha!"), 
+          [{'text': 'ok', 'action': () => { Navigator.of(context).pushReplacementNamed(Login.route) }}]
+        );
+      }
+    });
+  }
 
-    var body = jsonDecode(response.body);
-
-    if (response.statusCode == 200) {
-      setMessage("Senha redefinida!");
-    } else {
-      setMessage(body['error']);
-    }
+  void cleanScreen() {
+    setState(() {
+      _message = "";
+      _password.clear();
+    });
   }
 
   void setMessage(message) {
@@ -88,6 +96,9 @@ class ResetPasswordState extends State<ResetPassword> {
 }
 
 class ResetPassword extends StatefulWidget {
+
+  static final String route = '/reset_password';
+
   @override
   ResetPasswordState createState() => ResetPasswordState();
 }
