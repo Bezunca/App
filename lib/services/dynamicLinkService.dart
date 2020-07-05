@@ -3,12 +3,9 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 import "package:app/services/navigationService.dart";
 import "package:app/locator.dart";
-import 'package:app/localStorage/userCredentials.dart';
 import 'package:app/views/unlogged/login.dart';
 import 'package:app/views/unlogged/reset_password.dart';
-import 'package:app/utils/commonWidgets.dart';
 import 'package:app/services/userApi.dart';
-import 'package:app/views/home.dart';
 
 class DynamicLinkService {
   final NavigationService _navigationService = getIt<NavigationService>();

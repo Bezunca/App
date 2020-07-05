@@ -8,11 +8,12 @@ class NavigationService {
     return navigationKey.currentState.pop();
   }
 
-  Future<dynamic> push(String routeName, {dynamic arguments}) {
+  push(String routeName, {dynamic arguments}) {
     return navigationKey.currentState.pushNamed(routeName, arguments: arguments);
   }
 
-  Future<dynamic> setRoot(String routeName, {dynamic arguments}) {
-    return navigationKey.currentState.pushReplacementNamed(routeName, arguments: arguments);
+  setRoot(String routeName, {dynamic arguments}) {
+    navigationKey.currentState.popUntil((route) => route.isFirst);
+    navigationKey.currentState.pushReplacementNamed(routeName, arguments: arguments);
   }
 }

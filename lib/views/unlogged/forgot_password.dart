@@ -4,7 +4,6 @@ import 'package:app/utils/theme.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
 import 'package:app/utils/commonWidgets.dart';
-import 'package:app/views/unlogged/login.dart';
 
 class ForgotPasswordState extends State<ForgotPassword> {
 
@@ -79,7 +78,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
         openDialog(context, 
           Text("Email enviado!"), 
           Text("Verifique sua caixa de entrada para ter acesso as instruções de redefinição de senha!"), 
-          [{'text': 'OK', 'action': () => { Navigator.of(context).pushReplacementNamed(Login.route) }}]
+          [{'text': 'OK', 'action': () => { Navigator.of(context).popUntil((route) => route.isFirst) }}]
         );
         cleanScreen();
       }

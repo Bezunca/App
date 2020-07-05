@@ -4,7 +4,6 @@ import 'package:app/utils/theme.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
 import 'package:app/utils/commonWidgets.dart';
-import 'package:app/views/unlogged/login.dart';
 
 class ResetPasswordState extends State<ResetPassword> {
   final UserApi _userApi = getIt<UserApi>();
@@ -95,7 +94,7 @@ class ResetPasswordState extends State<ResetPassword> {
             {
               'text': 'OK',
               'action': () =>
-                  {Navigator.of(context).pushReplacementNamed(Login.route)}
+                  {Navigator.of(context).popUntil((route) => route.isFirst)}
             }
           ]);
         }

@@ -4,7 +4,6 @@ import 'package:app/utils/theme.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
 import 'package:app/utils/commonWidgets.dart';
-import 'package:app/views/unlogged/login.dart';
 
 class RegisterState extends State<Register> {
   final UserApi _userApi = getIt<UserApi>();
@@ -125,7 +124,7 @@ class RegisterState extends State<Register> {
                 {
                   'text': 'OK',
                   'action': () =>
-                  {Navigator.of(context).pushReplacementNamed(Login.route)}
+                  {Navigator.of(context).popUntil((route) => route.isFirst)}
                 }
               ]);
         }
