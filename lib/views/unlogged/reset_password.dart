@@ -58,6 +58,10 @@ class ResetPasswordState extends State<ResetPassword> {
                 child: buildErrorMessage(_errors, 'confirmation'),
               ),
               Container(
+                margin: EdgeInsets.only(left:30,right:30),
+                child: buildErrorMessage(_errors, 'general'),
+              ),
+              Container(
                 height: 40.0,
                 margin: EdgeInsets.only(top: 20.0, left: 30, right: 30),
                 child: RaisedButton(
@@ -89,7 +93,7 @@ class ResetPasswordState extends State<ResetPassword> {
           openDialog(context, Text("Senha redefinida!"),
               Text("Já é possível fazer login com a nova senha!"), [
             {
-              'text': 'ok',
+              'text': 'OK',
               'action': () =>
                   {Navigator.of(context).pushReplacementNamed(Login.route)}
             }
@@ -109,6 +113,7 @@ class ResetPasswordState extends State<ResetPassword> {
     setState(() {
       _errors = {};
       _password.clear();
+      _passwordConfirmation.clear();
     });
   }
 }

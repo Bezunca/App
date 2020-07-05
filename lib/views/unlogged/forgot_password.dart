@@ -79,7 +79,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
         openDialog(context, 
           Text("Email enviado!"), 
           Text("Verifique sua caixa de entrada para ter acesso as instruções de redefinição de senha!"), 
-          [{'text': 'ok', 'action': () => { Navigator.of(context).pushReplacementNamed(Login.route) }}]
+          [{'text': 'OK', 'action': () => { Navigator.of(context).pushReplacementNamed(Login.route) }}]
         );
         cleanScreen();
       }

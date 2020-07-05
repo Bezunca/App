@@ -140,14 +140,14 @@ class LoginState extends State<Login> {
         if (response == null) {
           openDialog(context, null, Text("Erro no servidor."), [
             {
-              'text': 'ok',
+              'text': 'OK',
               'action': () => {Navigator.of(context).pop()}
             }
           ]);
         } else if (response.containsKey('error')) {
           openDialog(context, Text("Erro"), Text(response['error']), [
             {
-              'text': 'ok',
+              'text': 'OK',
               'action': () => {Navigator.of(context).pop()}
             }
           ]);
