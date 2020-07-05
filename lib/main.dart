@@ -1,7 +1,8 @@
-import 'package:app/views/unlogged/login.dart';
-import 'package:app/views/unlogged/register.dart';
-import 'package:app/views/unlogged/forgot_password.dart';
-import 'package:app/views/unlogged/reset_password.dart';
+import 'package:app/views/auth/login.dart';
+import 'package:app/views/auth/register.dart';
+import 'package:app/views/auth/forgot_password.dart';
+import 'package:app/views/auth/reset_password.dart';
+import 'package:app/views/wallet/cei.dart';
 import 'package:app/views/home.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,8 @@ void main() async{
       Register.route: (BuildContext context) => new Register(),
       Login.route: (BuildContext context) => new Login(),
       ForgotPassword.route: (BuildContext context) => new ForgotPassword(),
-      ResetPassword.route: (BuildContext context) => new ResetPassword()
+      ResetPassword.route: (BuildContext context) => new ResetPassword(),
+      CEI.route: (BuildContext context) => new CEI()
     },
     navigatorKey: getIt<NavigationService>().navigationKey,
     )

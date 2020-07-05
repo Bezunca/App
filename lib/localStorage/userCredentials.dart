@@ -44,4 +44,8 @@ class UserCredentials {
     Storage credStorage = Storage(_filename);
     return await credStorage.delete();
   }
+
+  String getToken() {
+    return _token;
+  }
 }

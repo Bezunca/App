@@ -3,10 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:app/views/portfolio.dart';
 import 'package:app/views/dividends.dart';
 import 'package:app/views/developerSettings.dart';
+import 'package:app/views/wallet/cei.dart';
+import 'package:app/locator.dart';
+import 'package:app/services/userApi.dart';
 
 class HomeState extends State<Home> {
+
+  final UserApi _userApi = getIt<UserApi>();
+
   int _currentIndex = 0;
   final List<Widget> _children = [Portfolio(), Dividends()];
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getUserInfo(context));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +57,15 @@ class HomeState extends State<Home> {
         },
       ),
     );
+  }
+
+  void getUserInfo(context) async {
+    var response = await _userApi.userInfo();
+    if (response != null && !response.containsKey('errors')) {
+      if(!response['cei']){
+        Navigator.pushNamed(context, CEI.route);
+      }
+    }
   }
 }
 

@@ -67,14 +67,10 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
     setState(() {
       if(response == null){
-        print("resposta null");
         _errors = {"general": "Erro no servidor"};
       }else if(response.containsKey('errors')){
-        print("recebi erro");
-        print(response);
         _errors = response["errors"];
       }else{
-        print("show pa show pei");
         openDialog(context, 
           Text("Email enviado!"), 
           Text("Verifique sua caixa de entrada para ter acesso as instruções de redefinição de senha!"), 

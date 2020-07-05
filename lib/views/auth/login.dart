@@ -5,11 +5,12 @@ import 'package:app/localStorage/userCredentials.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
 import 'package:app/utils/commonWidgets.dart';
-import 'package:app/views/unlogged/register.dart';
-import 'package:app/views/unlogged/forgot_password.dart';
+import 'package:app/views/auth/register.dart';
+import 'package:app/views/auth/forgot_password.dart';
 import 'package:app/views/home.dart';
 
 class LoginState extends State<Login> {
+  
   final UserApi _userApi = getIt<UserApi>();
 
   final _email = TextEditingController();
@@ -124,6 +125,7 @@ class LoginState extends State<Login> {
   void doLogin(BuildContext context, token) {
     UserCredentials creds = UserCredentials(token);
     creds.save();
+    _userApi.setAuthorizationToken(token);
     Navigator.of(context).pushReplacementNamed(Home.route);
   }
 
