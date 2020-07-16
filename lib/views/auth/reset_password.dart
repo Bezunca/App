@@ -118,7 +118,6 @@ class ResetPasswordState extends State<ResetPassword> {
 }
 
 class ResetPassword extends StatefulWidget {
-  static final String route = '/reset_password';
 
   @override
   ResetPasswordState createState() => ResetPasswordState();

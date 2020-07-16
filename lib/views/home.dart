@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:app/views/portfolio.dart';
 import 'package:app/views/dividends.dart';
+import 'package:app/views/user/profile.dart';
 import 'package:app/views/developerSettings.dart';
-import 'package:app/views/wallet/cei.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
+
+import 'package:app/routes.dart';
 
 class HomeState extends State<Home> {
 
   final UserApi _userApi = getIt<UserApi>();
 
   int _currentIndex = 0;
-  final List<Widget> _children = [Portfolio(), Dividends()];
+  final List<Widget> _children = [Portfolio(), Dividends(), UserProfile()];
 
   void initState() {
     super.initState();
@@ -37,6 +39,10 @@ class HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.attach_money),
             title: new Text('Proventos'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.person),
+            title: new Text('Perfil'),
           )
         ],
       ),
@@ -60,18 +66,16 @@ class HomeState extends State<Home> {
   }
 
   void getUserInfo(context) async {
-    var response = await _userApi.userInfo();
-    if (response != null && !response.containsKey('errors')) {
-      if(!response['cei']){
-        Navigator.pushNamed(context, CEI.route);
-      }
+    await _userApi.userInfo();
+    if (_userApi.userInfoData != null && _userApi.userInfoData['cei'] == null) {
+      setState(() {
+        _currentIndex = 2;
+      });
     }
   }
 }
 
 class Home extends StatefulWidget {
-
-  static final String route = '/home';
 
   @override
   State<StatefulWidget> createState() {

@@ -3,13 +3,11 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 import "package:app/services/navigationService.dart";
 import "package:app/locator.dart";
-import 'package:app/views/auth/login.dart';
-import 'package:app/views/auth/reset_password.dart';
-import 'package:app/services/userApi.dart';
+
+import 'package:app/routes.dart';
 
 class DynamicLinkService {
   final NavigationService _navigationService = getIt<NavigationService>();
-  final UserApi _userApi = getIt<UserApi>();
 
   Future handleDynamicLinks() async {
     // 1. Get the initial dynamic link if the app is opened with a dynamic link
@@ -46,11 +44,11 @@ class DynamicLinkService {
   }
 
   void _confirmRegistration(String token) async {
-    _navigationService.setRoot(Login.route, arguments: {'token': token});
+    _navigationService.setRoot(Routes.login, arguments: {'token': token});
   }
 
   void _resetPassword(String token) {
-    _navigationService.setRoot(Login.route);
-    _navigationService.push(ResetPassword.route, arguments: {'token': token});
+    _navigationService.setRoot(Routes.login);
+    _navigationService.push(Routes.resetPassword, arguments: {'token': token});
   }
 }

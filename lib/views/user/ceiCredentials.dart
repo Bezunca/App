@@ -75,8 +75,8 @@ class CEIState extends State<CEI> {
   }
 
   Future _onClickCEISync(BuildContext context) async {
-    openDialog(context, null, Text("Enviando! Pode demorar alguns minutos..."), [], dismissible: false);
-    var response = await _userApi.ceiSync(_user.text, _password.text);
+    openDialog(context, null, Text("Enviando..."), [], dismissible: false);
+    var response = await _userApi.ceiCredentials(_user.text, _password.text);
     Navigator.of(context).pop();
 
     setState(() {
@@ -112,8 +112,6 @@ class CEIState extends State<CEI> {
 }
 
 class CEI extends StatefulWidget {
-
-  static final String route = '/cei';
 
   @override
   CEIState createState() => CEIState();

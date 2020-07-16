@@ -92,8 +92,6 @@ class ForgotPasswordState extends State<ForgotPassword> {
 
 class ForgotPassword extends StatefulWidget {
 
-  static final String route = '/forgot_password';
-
   @override
   ForgotPasswordState createState() => ForgotPasswordState();
 }

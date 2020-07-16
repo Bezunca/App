@@ -5,8 +5,7 @@ import 'package:app/localStorage/userCredentials.dart';
 import "package:app/services/dynamicLinkService.dart";
 import "package:app/services/userApi.dart";
 
-import "package:app/views/auth/login.dart";
-import "package:app/views/home.dart";
+import 'package:app/routes.dart';
 
 initApp(BuildContext context) async {
 
@@ -29,6 +28,6 @@ redirect(BuildContext context) async {
     _userApi.setAuthorizationToken(token);
   }
 
-  String route = hasCredentials ? Home.route : Login.route;
+  String route = hasCredentials ? Routes.home : Routes.login;
   Navigator.of(context).pushReplacementNamed(route);
 }

@@ -150,8 +150,6 @@ class RegisterState extends State<Register> {
 }
 
 class Register extends StatefulWidget {
-  //  TODO: restructure routes
-  static final String route = '/register';
 
   @override
   RegisterState createState() => RegisterState();

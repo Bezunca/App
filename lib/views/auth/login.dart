@@ -5,9 +5,8 @@ import 'package:app/localStorage/userCredentials.dart';
 import 'package:app/locator.dart';
 import 'package:app/services/userApi.dart';
 import 'package:app/utils/commonWidgets.dart';
-import 'package:app/views/auth/register.dart';
-import 'package:app/views/auth/forgot_password.dart';
-import 'package:app/views/home.dart';
+
+import 'package:app/routes.dart';
 
 class LoginState extends State<Login> {
   
@@ -70,7 +69,7 @@ class LoginState extends State<Login> {
                   child: FlatButton(
                       onPressed: () {
                         cleanScreen();
-                        Navigator.pushNamed(context, ForgotPassword.route);
+                        Navigator.pushNamed(context, Routes.forgotPassword);
                       },
                       child: Text("Esqueceu sua senha?",
                           style: smallerFont, textAlign: TextAlign.center))),
@@ -93,7 +92,7 @@ class LoginState extends State<Login> {
                   child: Text("CADASTRE-SE", style: buttonFont),
                   onPressed: () {
                     cleanScreen();
-                    Navigator.pushNamed(context, Register.route);
+                    Navigator.pushNamed(context, Routes.register);
                   },
                 ),
               ),
@@ -126,7 +125,7 @@ class LoginState extends State<Login> {
     UserCredentials creds = UserCredentials(token);
     creds.save();
     _userApi.setAuthorizationToken(token);
-    Navigator.of(context).pushReplacementNamed(Home.route);
+    Navigator.of(context).pushReplacementNamed(Routes.home);
   }
 
   Future<void> confirmRegister(BuildContext context) async {
@@ -173,7 +172,6 @@ class LoginState extends State<Login> {
 }
 
 class Login extends StatefulWidget {
-  static final String route = '/login';
 
   @override
   LoginState createState() => LoginState();
